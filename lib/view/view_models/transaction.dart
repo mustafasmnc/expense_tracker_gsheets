@@ -1,18 +1,31 @@
+import 'package:expense_tracker_gsheets/core/google_sheets_api.dart';
 import 'package:expense_tracker_gsheets/theme/theme_service.dart';
 import 'package:expense_tracker_gsheets/theme/themes.dart';
+import 'package:expense_tracker_gsheets/view/pages/homepage.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
-class MyTransaction extends StatelessWidget {
+class MyTransaction extends StatefulWidget {
+  final int rowId;
+  final String transactionId;
   final String transactionName;
   final String transactionMoney;
   final String expenseOrIncome;
-  const MyTransaction(
-      {Key? key,
-      required this.transactionName,
-      required this.transactionMoney,
-      required this.expenseOrIncome})
-      : super(key: key);
+  const MyTransaction({
+    Key? key,
+    required this.transactionId,
+    required this.transactionName,
+    required this.transactionMoney,
+    required this.expenseOrIncome,
+    required this.rowId,
+  }) : super(key: key);
 
+  @override
+  State<MyTransaction> createState() => _MyTransactionState();
+}
+
+class _MyTransactionState extends State<MyTransaction> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -44,23 +57,25 @@ class MyTransaction extends StatelessWidget {
               Row(
                 children: [
                   arrowIcon(
-                      expenseOrIncome == 'expense'
+                      widget.expenseOrIncome == 'expense'
                           ? Icons.arrow_downward
                           : Icons.arrow_upward,
-                      expenseOrIncome == 'expense' ? Colors.red : Colors.green),
-                  Text(transactionName,
+                      widget.expenseOrIncome == 'expense'
+                          ? Colors.red
+                          : Colors.green),
+                  Text(widget.transactionName,
                       style: titleStyle.copyWith(
-                        color: expenseOrIncome == 'expense'
+                        color: widget.expenseOrIncome == 'expense'
                             ? Colors.red
                             : Colors.green,
                       )),
                 ],
               ),
               Text(
-                (expenseOrIncome == 'expense' ? '-' : '+') +
-                    "\$ $transactionMoney",
+                (widget.expenseOrIncome == 'expense' ? '-' : '+') +
+                    "\$ ${widget.transactionMoney}",
                 style: titleStyle.copyWith(
-                    color: (expenseOrIncome == 'expense'
+                    color: (widget.expenseOrIncome == 'expense'
                         ? Colors.red
                         : Colors.green),
                     fontSize: 18,

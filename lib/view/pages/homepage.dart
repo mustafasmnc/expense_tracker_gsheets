@@ -152,7 +152,8 @@ class _HomePageState extends State<HomePage> {
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 15.0),
-              child: TopNeuCard(context: context,
+              child: TopNeuCard(
+                context: context,
                 balance: double.parse((GoogleSheetsApi.calculateIncome() -
                             GoogleSheetsApi.calculateExpense())
                         .toStringAsFixed(2))
@@ -175,12 +176,15 @@ class _HomePageState extends State<HomePage> {
                                   GoogleSheetsApi.currentTransactions.length,
                               itemBuilder: (context, index) {
                                 return MyTransaction(
-                                    transactionName: GoogleSheetsApi
+                                    rowId: index,
+                                    transactionId: GoogleSheetsApi
                                         .currentTransactions[index][0],
-                                    transactionMoney: GoogleSheetsApi
+                                    transactionName: GoogleSheetsApi
                                         .currentTransactions[index][1],
+                                    transactionMoney: GoogleSheetsApi
+                                        .currentTransactions[index][2],
                                     expenseOrIncome: GoogleSheetsApi
-                                        .currentTransactions[index][2]);
+                                        .currentTransactions[index][3]);
                               }))
                 ],
               ),

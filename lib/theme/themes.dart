@@ -13,13 +13,15 @@ const Color primaryClr = bluishClr;
 
 class Themes {
   static final light = ThemeData(
-      backgroundColor: Colors.grey[300],
-      primaryColor: primaryClr,
-      brightness: Brightness.light,
-      primaryColorLight: Colors.white.withOpacity(0.8),
-      primaryColorDark: Colors.black.withOpacity(0.1),
-      cardColor: Colors.grey[400],
-      textTheme: TextTheme(bodyText1: TextStyle(color: Colors.black54)));
+    backgroundColor: Colors.grey[300],
+    primaryColor: primaryClr,
+    primarySwatch: Colors.grey,
+    brightness: Brightness.light,
+    primaryColorLight: Colors.white.withOpacity(0.8),
+    primaryColorDark: Colors.black.withOpacity(0.1),
+    cardColor: Colors.grey[400],
+    textTheme: TextTheme(bodyText1: TextStyle(color: Colors.black54)),
+  );
   static final dark = ThemeData(
     backgroundColor: darkGreyClr,
     primaryColor: darkGreyClr,
@@ -78,4 +80,3 @@ TextStyle get titleStyle {
     color: ThemeService.instance.isDarkMode() ? Colors.grey : darkHeaderClr,
   ));
 }
-

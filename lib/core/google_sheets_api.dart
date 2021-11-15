@@ -1,9 +1,13 @@
+import 'dart:math';
+
 import 'package:gsheets/gsheets.dart';
 
-class GoogleSheetsApi {
+class GoogleSheetsApi{
   //create credentials
   static const _credentials = r'''
-  //Enter your credentials here
+  {
+   //Enter your credentials here
+  }
   ''';
 
   //set up & connect to the spreedsheet
@@ -39,15 +43,21 @@ class GoogleSheetsApi {
     if (_worksheet == null) print("worksheet null");
 
     for (int i = 0; i < numberOfTransactions - 1; i++) {
-      final String transactionName =
+      final String transactionId =
           await _worksheet!.values.value(column: 1, row: i + 2);
-      final String transactionAmount =
+      final String transactionName =
           await _worksheet!.values.value(column: 2, row: i + 2);
-      final String transactionType =
+      final String transactionAmount =
           await _worksheet!.values.value(column: 3, row: i + 2);
+      final String transactionType =
+          await _worksheet!.values.value(column: 4, row: i + 2);
       if (currentTransactions.length < numberOfTransactions - 1) {
-        currentTransactions
-            .add([transactionName, transactionAmount, transactionType]);
+        currentTransactions.add([
+          transactionId,
+          transactionName,
+          transactionAmount,
+          transactionType
+        ]);
       }
     }
     print(currentTransactions);
@@ -57,30 +67,41 @@ class GoogleSheetsApi {
   //insert a new transaction
   static Future insert(String name, String amount, bool isIncome) async {
     if (_worksheet == null) return;
+    Random random = new Random();
+    int randomNumber = random.nextInt(100000);
     numberOfTransactions++;
-    currentTransactions
-        .add([name, amount, isIncome == true ? 'income' : 'expense']);
-    await _worksheet!.values
-        .appendRow([name, amount, isIncome == true ? 'income' : 'expense']);
+    currentTransactions.add([
+      randomNumber.toString(),
+      name,
+      amount,
+      isIncome == true ? 'income' : 'expense'
+    ]);
+    await _worksheet!.values.appendRow([
+      randomNumber.toString(),
+      name,
+      amount,
+      isIncome == true ? 'income' : 'expense'
+    ]);
   }
+
 
   //calculate the total income
   static double calculateIncome() {
     double totalIncome = 0;
     for (int i = 0; i < currentTransactions.length; i++) {
-      if (currentTransactions[i][2] == 'income') {
-        totalIncome += double.parse(currentTransactions[i][1]);
+      if (currentTransactions[i][3] == 'income') {
+        totalIncome += double.parse(currentTransactions[i][2]);
       }
     }
     return totalIncome;
   }
-  
+
   //calculate the total expense
   static double calculateExpense() {
     double totalExpense = 0;
     for (int i = 0; i < currentTransactions.length; i++) {
-      if (currentTransactions[i][2] == 'expense') {
-        totalExpense += double.parse(currentTransactions[i][1]);
+      if (currentTransactions[i][3] == 'expense') {
+        totalExpense += double.parse(currentTransactions[i][2]);
       }
     }
     return totalExpense;

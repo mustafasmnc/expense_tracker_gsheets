@@ -3,6 +3,8 @@
 import 'dart:async';
 
 import 'package:expense_tracker_gsheets/core/google_sheets_api.dart';
+import 'package:expense_tracker_gsheets/theme/theme_service.dart';
+import 'package:expense_tracker_gsheets/theme/themes.dart';
 import 'package:expense_tracker_gsheets/view/view_models/loading_circle.dart';
 import 'package:expense_tracker_gsheets/view/view_models/plus_button.dart';
 import 'package:expense_tracker_gsheets/view/view_models/top_card.dart';
@@ -143,14 +145,14 @@ class _HomePageState extends State<HomePage> {
       startLoading();
     }
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: ThemeService.instance.theme.backgroundColor,
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 15.0),
-              child: TopNeuCard(
+              child: TopNeuCard(context: context,
                 balance: double.parse((GoogleSheetsApi.calculateIncome() -
                             GoogleSheetsApi.calculateExpense())
                         .toStringAsFixed(2))

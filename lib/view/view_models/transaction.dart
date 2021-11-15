@@ -1,3 +1,5 @@
+import 'package:expense_tracker_gsheets/theme/theme_service.dart';
+import 'package:expense_tracker_gsheets/theme/themes.dart';
 import 'package:flutter/material.dart';
 
 class MyTransaction extends StatelessWidget {
@@ -16,10 +18,25 @@ class MyTransaction extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(10),
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-          color: Colors.grey[200],
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              color:
+                  ThemeService.instance.theme.backgroundColor.withOpacity(.1),
+              boxShadow: [
+                BoxShadow(
+                    color: ThemeService.instance.theme.primaryColorLight,
+                    offset: Offset(-6.0, -6.0),
+                    blurRadius: 15.0,
+                    spreadRadius: 1.0),
+                BoxShadow(
+                    color: ThemeService.instance.theme.primaryColorDark,
+                    offset: Offset(6.0, 6.0),
+                    blurRadius: 15.0,
+                    spreadRadius: 1.0),
+              ]),
           child: Center(
               child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -31,24 +48,23 @@ class MyTransaction extends StatelessWidget {
                           ? Icons.arrow_downward
                           : Icons.arrow_upward,
                       expenseOrIncome == 'expense' ? Colors.red : Colors.green),
-                  Text(
-                    transactionName,
-                    style: TextStyle(
+                  Text(transactionName,
+                      style: titleStyle.copyWith(
                         color: expenseOrIncome == 'expense'
                             ? Colors.red
                             : Colors.green,
-                        fontSize: 16),
-                  ),
+                      )),
                 ],
               ),
               Text(
                 (expenseOrIncome == 'expense' ? '-' : '+') +
                     "\$ $transactionMoney",
-                style: TextStyle(
+                style: titleStyle.copyWith(
                     color: (expenseOrIncome == 'expense'
                         ? Colors.red
                         : Colors.green),
-                    fontSize: 18),
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500),
               ),
             ],
           )),
